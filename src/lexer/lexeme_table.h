@@ -8,7 +8,7 @@
 
 
 #define MAX_LEXEME_LENGTH 100    
-#define MAX_LEXEME_COUNT 500
+#define MAX_LEXEME_COUNT 1000
 
 typedef struct {
     char lexeme[MAX_LEXEME_LENGTH];

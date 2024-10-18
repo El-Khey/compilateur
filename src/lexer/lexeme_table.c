@@ -27,26 +27,50 @@ void init_lexeme_table() {
 
 void insert_lexeme(const char* lexeme) {
     int length = strlen(lexeme);
-    int hash_code = get_hash_value(hash_function(lexeme, length));
+    int hash_code = hash_function(lexeme, length);
     int prev_index = -1;
 
+    // printf("Hash code : %d, test : %d\n",hash_code,get_hash_value(hash_code));
+    // on cherche dans la table des hash codes si un lexème avec le même hash code existe déjà
+    if(get_hash_value(hash_code) == -1) {
+        hash_code = lexeme_table_size;
+        Lexeme new_lexeme = construct_lexeme(lexeme, length, -1);
+        insert_hash(lexeme, hash_code);       
+        lexeme_table[lexeme_table_size++] = new_lexeme; 
+    }
+    // si c'est le cas on va vérifier si le même lexème existe
+    else {
+        // si un lexème de même nom existe déjà : on n'insere pas
+        //printf("Comparaison : %s, %s\n",lexeme,lexeme_table[get_hash_value(hash_code)].lexeme);
+        if(strcmp(lexeme, lexeme_table[get_hash_value(hash_code)].lexeme)) {
+            prev_index = get_hash_value(hash_code);
+            while(lexeme_table[prev_index].next != -1) {
+                prev_index = lexeme_table[prev_index].next;
+            }
+            lexeme_table[prev_index].next = lexeme_table_size;
+            Lexeme new_lexeme = construct_lexeme(lexeme, length, -1);
+            lexeme_table[lexeme_table_size++] = new_lexeme;    
+        }        
+    }
+
+    /*
     while (hash_code != -1) {
+
         if (!strcmp(lexeme_table[hash_code].lexeme, lexeme)) break;
 
         prev_index = hash_code;
         hash_code = lexeme_table[hash_code].next;
     }
 
-    if (hash_code != -1) return hash_code;
-    else hash_code = lexeme_table_size;
+    if(hash_code == -1) {
+        hash_code = lexeme_table_size;
+        Lexeme new_lexeme = construct_lexeme(lexeme, length, -1);
+        insert_hash(lexeme, hash_code);
+        // if (prev_index != -1) lexeme_table[prev_index].next = hash_code;
+        lexeme_table[lexeme_table_size++] = new_lexeme;
+    }
+    */
 
-    Lexeme new_lexeme = construct_lexeme(lexeme, length, -1);
-    insert_hash(lexeme, hash_code);
-
-    if (prev_index != -1) lexeme_table[prev_index].next = hash_code;
-    lexeme_table[lexeme_table_size++] = new_lexeme;
-
-    return hash_code;
 }
 
 

@@ -15,6 +15,8 @@
 
     extern int error_line;
     extern char *yytext;
+
+    int current_lexeme_code;
 %}
 
 
@@ -68,15 +70,18 @@ declaration: variable_declaration
            | procedure_declaration 
            ;
 
-variable_declaration: VARIABLE IDENTIFIER TWO_POINTS type SEMICOLON 
+variable_declaration: VARIABLE IDENTIFIER TWO_POINTS type SEMICOLON
                      ;
 
-function_declaration: FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS RETURN_TYPE type START declaration_list statement_list return_statement END ;
+function_declaration: FUNCTION IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS RETURN_TYPE type START declaration_list statement_list return_statement END 
+                    ; 
 
-procedure_declaration: PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS START declaration_list statement_list END ;
+procedure_declaration: PROCEDURE IDENTIFIER OPEN_PARENTHESIS parameter_list CLOSE_PARENTHESIS START declaration_list statement_list END 
+                     ;
 
-type_declaration: TYPE IDENTIFIER TWO_POINTS STRUCT START complex_type_fields END FSTRUCT SEMICOLON
-                | TYPE IDENTIFIER TWO_POINTS ARRAY dimension OF type_name SEMICOLON ;
+type_declaration: TYPE IDENTIFIER TWO_POINTS STRUCT START complex_type_fields END FSTRUCT SEMICOLON 
+                | TYPE IDENTIFIER TWO_POINTS ARRAY dimension OF type_name SEMICOLON 
+                ;
 
 
 
